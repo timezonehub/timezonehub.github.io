@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="google-site-verification" content="HoWofmErOOKMSn8dHeXvBTb5cGoEBEB1rQ7Y3CrUYgY" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Time Zone Converter — Convert Time Between Any Time Zones | TimeZoneHub</title>
+    <meta name="description" content="TimeZoneHub is a free time zone converter. Convert any date and time between hundreds of IANA time zones, see the exact offset difference, and check live clocks for New York, London, Dubai, Karachi, Tokyo and Sydney." />
+    <link rel="canonical" href="https://timezonehub.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="TimeZoneHub" />
+    <meta property="og:title" content="Time Zone Converter — Convert Time Between Any Time Zones | TimeZoneHub" />
+    <meta property="og:description" content="Convert any date and time between hundreds of IANA time zones, see the exact offset difference, and check live world clocks for major cities." />
+    <meta property="og:url" content="https://timezonehub.github.io/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Time Zone Converter | TimeZoneHub" />
+    <meta name="twitter:description" content="Free time zone converter with live world clocks, offset differences and plain-English guides to UTC, GMT and daylight saving time." />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "TimeZoneHub",
+      "url": "https://timezonehub.github.io/",
+      "description": "Free time zone converter with live world clocks and plain-English guides to UTC, GMT and daylight saving time."
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet" />
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+      :root {
+        --bg: #edf1f6;
+        --surface: #ffffff;
+        --ink: #1c2733;
+        --ink-soft: #43536a;
+        --navy: #0c2242;
+        --navy-deep: #081831;
+        --navy-ink: #eaf0f8;
+        --accent: #b97e1e;
+        --accent-ink: #8a5c10;
+        --line: #c9d3e0;
+        --result-bg: #0c2242;
+        --result-ink: #f2f6fb;
+        --input-bg: #ffffff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0d141f;
+          --surface: #131e2e;
+          --ink: #dde6f0;
+          --ink-soft: #9db0c6;
+          --navy: #0a1a33;
+          --navy-deep: #060f1f;
+          --accent: #d99a2b;
+          --accent-ink: #e5ac45;
+          --line: #2b3c55;
+          --result-bg: #0a1a33;
+          --input-bg: #0f1a2a;
+        }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Public Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 1.0625rem;
+        line-height: 1.65;
+      }
+      a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 2px; }
+      a:hover { text-decoration-thickness: 2px; }
+      h1, h2, h3 { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; line-height: 1.2; color: var(--ink); }
+      h1 { font-size: 2.35rem; margin: 0 0 1rem; }
+      h2 { font-size: 1.65rem; margin: 2.4rem 0 0.8rem; }
+      h3 { font-size: 1.2rem; margin: 1.6rem 0 0.5rem; }
+      p { margin: 0 0 1rem; }
+      ul, ol { margin: 0 0 1rem; padding-left: 1.4rem; }
+      li { margin-bottom: 0.35rem; }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+      /* Header */
+      header.site {
+        background: var(--navy);
+        color: var(--navy-ink);
+        border-bottom: 4px solid var(--accent);
+      }
+      header.site .wrap { padding-top: 18px; padding-bottom: 14px; }
+      .brand { font-family: "Source Serif 4", Georgia, serif; font-size: 1.55rem; font-weight: 700; color: #fff; text-decoration: none; letter-spacing: 0.2px; }
+      .brand span { color: var(--accent); }
+      .brand:hover { text-decoration: none; }
+      .tagline { margin: 2px 0 0; font-size: 0.92rem; color: #b9c9de; }
+      nav.main { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 4px 22px; }
+      nav.main a { color: var(--navy-ink); text-decoration: none; font-weight: 600; font-size: 0.98rem; padding: 8px 2px; display: inline-block; }
+      nav.main a:hover, nav.main a.active { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+
+      main { padding: 34px 0 10px; }
+      .page { display: none; }
+      .page.current { display: block; }
+      .lede { font-size: 1.16rem; color: var(--ink-soft); }
+      .meta-line { color: var(--ink-soft); font-size: 0.92rem; margin-bottom: 1.2rem; }
+      hr.sep { border: none; border-top: 1px solid var(--line); margin: 2.6rem 0 0; }
+
+      /* Converter tool */
+      .tool {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-top: 5px solid var(--navy);
+        padding: 26px 26px 8px;
+        margin: 26px 0 8px;
+      }
+      .tool h2 { margin-top: 0; }
+      .tool-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 14px; align-items: end; }
+      .field label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; }
+      .field select, .field input {
+        width: 100%; padding: 9px 10px; font-size: 1rem; font-family: inherit;
+        color: var(--ink); background: var(--input-bg); border: 1px solid var(--line); border-radius: 4px;
+      }
+      .swap-wrap { padding-bottom: 2px; }
+      button.swap, button.now-btn {
+        font-family: inherit; font-weight: 600; cursor: pointer; border-radius: 4px;
+        border: 1px solid var(--navy); background: var(--navy); color: #fff; padding: 9px 16px; font-size: 0.95rem;
+      }
+      button.swap { font-size: 1.15rem; padding: 7px 14px; line-height: 1; }
+      button.now-btn { background: transparent; color: var(--accent-ink); border-color: var(--accent-ink); margin-top: 12px; }
+      button.swap:hover, button.now-btn:hover { opacity: 0.88; }
+      .when-row { max-width: 340px; margin-top: 16px; }
+      .result {
+        background: var(--result-bg); color: var(--result-ink);
+        padding: 22px 26px; margin: 22px -26px 0; 
+      }
+      .result .r-label { font-size: 0.88rem; letter-spacing: 0.04em; text-transform: uppercase; color: #a9bedd; margin: 0 0 4px; }
+      .result .r-time { font-family: "Source Serif 4", Georgia, serif; font-size: 2rem; font-weight: 700; margin: 0 0 2px; color: #fff; }
+      .result .r-sub { margin: 0 0 10px; color: #cdd9ea; }
+      .result .r-diff { margin: 0; font-weight: 600; color: #f3c96b; }
+      .result .r-utc { margin: 4px 0 16px; font-size: 0.92rem; color: #a9bedd; }
+      .tool-note { font-size: 0.92rem; color: var(--ink-soft); margin-top: 14px; }
+
+      /* World clock strip */
+      .clock-strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 30px 0 6px; padding: 6px 0; }
+      .clock-row { display: flex; flex-wrap: wrap; }
+      .clock-cell { flex: 1 1 130px; padding: 12px 14px 12px 0; }
+      .clock-cell + .clock-cell { border-left: 1px solid var(--line); padding-left: 14px; }
+      .clock-city { font-weight: 700; font-size: 0.98rem; }
+      .clock-time { font-family: "Source Serif 4", Georgia, serif; font-size: 1.45rem; font-weight: 700; white-space: nowrap; }
+      .clock-date { font-size: 0.86rem; color: var(--ink-soft); }
+      .clock-off { font-size: 0.86rem; color: var(--accent-ink); font-weight: 600; }
+
+      /* Article list + prose pages */
+      .article-list { list-style: none; padding: 0; }
+      .article-list li { padding: 18px 0; border-bottom: 1px solid var(--line); margin: 0; }
+      .article-list h3 { margin: 0 0 4px; }
+      .article-list h3 a { color: var(--ink); text-decoration: none; }
+      .article-list h3 a:hover { color: var(--accent-ink); text-decoration: underline; }
+      .article-list p { margin: 0; color: var(--ink-soft); }
+      .faq-item { margin-bottom: 1.4rem; }
+      .faq-item h3 { margin-bottom: 0.3rem; }
+      table.mini { border-collapse: collapse; margin: 0 0 1.2rem; width: 100%; }
+      table.mini th, table.mini td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 0.98rem; }
+      table.mini th { font-weight: 700; }
+
+      footer.site { background: var(--navy-deep); color: #b9c9de; margin-top: 54px; }
+      footer.site .wrap { padding-top: 28px; padding-bottom: 30px; }
+      footer.site nav { display: flex; flex-wrap: wrap; gap: 4px 20px; margin-bottom: 14px; }
+      footer.site nav a { color: var(--navy-ink); text-decoration: none; font-size: 0.95rem; padding: 6px 0; display: inline-block; }
+      footer.site nav a:hover { text-decoration: underline; }
+      footer.site p { margin: 0; font-size: 0.92rem; }
+
+      @media (max-width: 640px) {
+        h1 { font-size: 1.85rem; }
+        .tool { padding: 20px 16px 6px; }
+        .result { margin: 20px -16px 0; padding: 18px 16px; }
+        .result .r-time { font-size: 1.55rem; }
+        .tool-grid { grid-template-columns: 1fr; }
+        .swap-wrap { text-align: center; padding: 0; }
+        button.swap { transform: rotate(90deg); }
+        .clock-cell + .clock-cell { border-left: none; padding-left: 0; }
+        .clock-cell { flex-basis: 45%; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site">
+      <div class="wrap">
+        <a class="brand" href="#/">TimeZone<span>Hub</span></a>
+        <p class="tagline">Convert time between any two places on Earth — and actually understand why the answer is what it is.</p>
+        <nav class="main" aria-label="Main navigation">
+          <a href="#/" data-nav="home">Home</a>
+          <a href="#/converter" data-nav="home">Converter</a>
+          <a href="#/articles" data-nav="articles">Articles</a>
+          <a href="#/faq" data-nav="faq">FAQ</a>
+          <a href="#/about" data-nav="about">About</a>
+          <a href="#/contact" data-nav="contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+
+      <!-- ============ HOME ============ -->
+      <section class="page" id="page-home">
+        <h1>Time Zone Converter</h1>
+        <p class="lede">Pick a date and time, choose where it starts and where it needs to end up, and TimeZoneHub converts it instantly — using the same official IANA time zone rules your phone and calendar rely on, including daylight saving changes.</p>
+        <p>Time zones cause a quiet kind of chaos: a meeting booked for "9 in the morning" that lands at midnight for half the team, a flight that seems to arrive before it leaves, a call with family on the other side of the world that always seems to happen at the worst possible hour. Most of that confusion disappears once you understand two things — how the <a href="#/article/how-time-zones-work">time zone system actually works</a>, and what the exact offset between two places is on the specific date you care about. The converter below handles the second part. The guides on this page handle the first.</p>
+
+        <div class="tool" id="tool">
+          <h2>Convert a time</h2>
+          <div class="tool-grid">
+            <div class="field">
+              <label for="fromZone">From time zone</label>
+              <select id="fromZone"></select>
+            </div>
+            <div class="swap-wrap">
+              <button class="swap" id="swapBtn" type="button" title="Swap time zones" aria-label="Swap time zones">&#8646;</button>
+            </div>
+            <div class="field">
+              <label for="toZone">To time zone</label>
+              <select id="toZone"></select>
+            </div>
+          </div>
+          <div class="field when-row">
+            <label for="whenInput">Date and time (in the &ldquo;from&rdquo; zone)</label>
+            <input type="datetime-local" id="whenInput" />
+          </div>
+          <button class="now-btn" id="nowBtn" type="button">Use the current time</button>
+          <div class="result" aria-live="polite">
+            <p class="r-label" id="rLabel">Converted time</p>
+            <p class="r-time" id="rTime">—</p>
+            <p class="r-sub" id="rSub"></p>
+            <p class="r-diff" id="rDiff"></p>
+            <p class="r-utc" id="rUtc"></p>
+          </div>
+          <p class="tool-note">Results update as you change any field. Offsets are calculated for the exact date you pick, so a conversion in January and the same conversion in July can legitimately give different answers when <a href="#/article/daylight-saving-time-explained">daylight saving time</a> is involved.</p>
+        </div>
+
+        <h2>World clock — right now</h2>
+        <p>Before converting anything, it helps to see where the world's major business and family hubs stand at this moment. These clocks update every second, straight from your device's clock and the official zone rules.</p>
+        <div class="clock-strip">
+          <div class="clock-row" id="clockRow"></div>
+        </div>
+        <p class="tool-note">Notice how the date is not the same everywhere. When it is still Tuesday evening in New York, it is already Wednesday morning in Sydney — a gap of up to 16 hours depending on the season. That single fact explains most missed calls and doubled bookings.</p>
+
+        <hr class="sep" />
+        <h2>How time zones work</h2>
+        <p>The Earth rotates once every 24 hours, which means the sun reaches its highest point at a different moment for every longitude on the planet. If every town kept its own solar time, neighbouring towns would disagree by minutes and railway timetables would be impossible. The solution, agreed internationally in the late nineteenth century, was to divide the world into bands, each roughly 15 degrees of longitude wide, and have every place inside a band share the same clock time. One full rotation is 360 degrees, and 360 divided by 15 gives the 24 standard zones that anchor the system.</p>
+        <p>In practice the bands bend around national and regional borders, because a single country usually prefers a single clock. That is why the map of time zones looks jagged rather than striped, and why the real answer to <a href="#/article/how-many-time-zones">how many time zones there are</a> is more than 24. Every zone is described by its offset from a single reference time: the number of hours and minutes it sits ahead of or behind that reference. New York in winter is five hours behind it; Karachi is five hours ahead of it all year round.</p>
+        <p>That reference time is where the alphabet soup begins, so it is worth reading our full explanation of <a href="#/article/how-time-zones-work">how time zones work</a>, from the prime meridian to the International Date Line, before your next trip or cross-border project.</p>
+
+        <h2>UTC and GMT, in plain English</h2>
+        <p>GMT — Greenwich Mean Time — is the older of the two standards, based on the average solar day as observed from the Royal Observatory in Greenwich, London. UTC — Coordinated Universal Time — is its modern successor, kept by atomic clocks and adjusted with occasional leap seconds so it never drifts far from the Earth's rotation. For everyday purposes the two are interchangeable: when a zone is described as "UTC+5", it is five hours ahead of both. The differences only matter to scientists, satellite operators and people who write time zone software.</p>
+        <p>The important practical point is that UTC itself never changes for daylight saving. It is the fixed ruler against which every other zone is measured, which is why flight schedules, server logs and international contracts are so often written in it. Our article on <a href="#/article/utc-vs-gmt">UTC vs GMT</a> explains where each term came from, when they genuinely differ, and which one you should use in your own documents.</p>
+
+        <h2>Daylight saving time: the moving part</h2>
+        <p>Roughly 70 countries shift their clocks forward by one hour in spring and back in autumn, a practice called daylight saving time in North America and "summer time" in Europe. The idea is to move an hour of daylight from the early morning, when most people are asleep, to the evening, when they can use it. Whether it still makes sense is debated every year, but while it exists it has one undeniable effect on conversions: the offset between two places is not constant.</p>
+        <p>New York and London are normally five hours apart. For a few weeks each spring and autumn, when one city has changed its clocks and the other has not, the gap shrinks to four hours. Places in the southern hemisphere, like Sydney, change their clocks in the opposite months, so the Sydney–London gap swings between nine and eleven hours across the year. The converter above handles all of this automatically because it uses the official rules for the exact date you select — but if you want to understand the rules themselves, read <a href="#/article/daylight-saving-time-explained">daylight saving time explained</a>.</p>
+
+        <h2>The best times for international calls</h2>
+        <p>A workable call needs both sides awake and, ideally, inside reasonable hours — say 8:00 in the morning to 10:00 in the evening. The wider the gap between two cities, the smaller the overlap. New York and London share a comfortable window: 8:00–13:00 in New York is 13:00–18:00 in London, squarely inside both working days. London and Karachi overlap almost as kindly, because Karachi is only four or five hours ahead depending on the season.</p>
+        <p>The hard pairs are the ones separated by ten or more hours. Between New York and Sydney there is no hour that falls inside both standard working days; someone always has to take the call early or late, and fair teams rotate who that someone is. Between London and Tokyo the only comfortable overlap is early morning in London, late afternoon in Tokyo. Our guide to the <a href="#/article/best-meeting-times-across-time-zones">best meeting times across time zones</a> works through the most common city pairs with specific suggested hours, and the <a href="#/faq">frequently asked questions</a> page covers the etiquette of rotating inconvenient slots.</p>
+        <p>A simple habit prevents most disasters: never send a meeting time as a bare number. "Let's talk at 3" means nothing across borders; "3:00 pm your time (Karachi), 10:00 am mine (London)" means everything. Better still, send the time converted both ways and state the date in both cities, because the call may fall on different calendar days.</p>
+
+        <h2>Quick answers</h2>
+        <div class="faq-item">
+          <h3>Why did my conversion change between two dates?</h3>
+          <p>Because one of the two zones almost certainly observes daylight saving time and the other date falls on the other side of a clock change. The converter always uses the rules in force on the date you picked. See <a href="#/article/daylight-saving-time-explained">daylight saving time explained</a> for the full picture.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What is the difference between UTC and GMT?</h3>
+          <p>For daily life, none: both name the same reference time at zero offset. Technically UTC is the modern atomic-clock standard and GMT is the older astronomical one. Our <a href="#/article/utc-vs-gmt">UTC vs GMT</a> article covers the details.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How many time zones are there in the world?</h3>
+          <p>There are 24 standard hourly offsets, but counting distinct named zones in the official IANA database — including half-hour and 45-minute zones — the total runs into the hundreds. We break the numbers down in <a href="#/article/how-many-time-zones">how many time zones are there?</a></p>
+        </div>
+        <p>More questions are answered on the full <a href="#/faq">FAQ page</a>, and longer guides live in the <a href="#/articles">articles section</a>. You can also read <a href="#/about">about TimeZoneHub</a> to see how this site calculates its answers.</p>
+      </section>
+
+      <!-- ============ ARTICLES INDEX ============ -->
+      <section class="page" id="page-articles">
+        <h1>Articles</h1>
+        <p class="lede">Original, plain-English guides to how the world's clocks fit together — written to be read once and remembered.</p>
+        <ul class="article-list">
+          <li>
+            <h3><a href="#/article/how-time-zones-work">How Time Zones Work</a></h3>
+            <p>From local solar time to the prime meridian and the Date Line: the whole system explained from first principles.</p>
+          </li>
+          <li>
+            <h3><a href="#/article/utc-vs-gmt">UTC vs GMT: What Is the Difference?</a></h3>
+            <p>Two names for what looks like the same time. Where each came from, where they genuinely differ, and which to use.</p>
+          </li>
+          <li>
+            <h3><a href="#/article/daylight-saving-time-explained">Daylight Saving Time Explained</a></h3>
+            <p>Why clocks spring forward and fall back, which countries do it, and why it makes conversions change with the seasons.</p>
+          </li>
+          <li>
+            <h3><a href="#/article/how-many-time-zones">How Many Time Zones Are There in the World?</a></h3>
+            <p>24, 38 or several hundred? Why the honest answer depends on what you count — offsets, zones or database entries.</p>
+          </li>
+          <li>
+            <h3><a href="#/article/best-meeting-times-across-time-zones">Best Meeting Times Across Time Zones</a></h3>
+            <p>Worked-out overlap windows for the most common city pairs, plus the etiquette of sharing the inconvenient hours.</p>
+          </li>
+        </ul>
+        <p>Short on time? The <a href="#/faq">FAQ page</a> answers the most common questions in a few lines each, and the <a href="#/converter">converter</a> on the home page turns any of this theory into a concrete answer for your date.</p>
+      </section>
+
+      <!-- ============ ARTICLE: HOW TIME ZONES WORK ============ -->
+      <section class="page" id="page-article-how-time-zones-work">
+        <h1>How Time Zones Work</h1>
+        <p class="meta-line">TimeZoneHub guide · Reading time about 5 minutes</p>
+        <p>Every time zone on Earth exists because of one simple fact: the sun does not rise everywhere at once. As the planet turns, noon — the moment the sun sits highest in the sky — sweeps steadily westward across the surface. A town 15 degrees of longitude east of you experiences noon a full hour earlier. For most of human history that was no problem at all, because nobody travelled or communicated faster than a horse. Each town kept its own local time, set by its own sundials and church clocks, and the few minutes of difference between neighbours never mattered.</p>
+        <h2>Railways forced the issue</h2>
+        <p>The nineteenth century broke that arrangement. Railways needed timetables, and a timetable is meaningless when every station along the line keeps a different time. Britain standardised on a single "railway time" in 1847, taken from the Royal Observatory at Greenwich. North America's railroads followed in 1883, dividing the continent into the eastern, central, mountain and Pacific zones that survive today. In 1884 an international conference in Washington formalised the idea worldwide: the meridian through Greenwich became longitude zero, the prime meridian, and the world was notionally divided into 24 zones, each one hour apart.</p>
+        <h2>Offsets: the one idea that explains everything</h2>
+        <p>Modern timekeeping rests on a single reference — Coordinated Universal Time, UTC — and every zone is defined by how far it sits from it. Karachi is UTC+5: when it is noon UTC, it is 17:00 in Karachi. New York in winter is UTC−5: noon UTC is 07:00 there. Converting between any two zones is just arithmetic on their offsets: subtract the "from" offset, add the "to" offset. The reason conversions still trip people up is that offsets are not fixed properties of a place. Many zones change their offset twice a year for <a href="#/article/daylight-saving-time-explained">daylight saving time</a>, a few use offsets of 30 or 45 minutes rather than whole hours, and governments occasionally redraw the map entirely — Samoa famously skipped a whole day in 2011 by jumping across the Date Line.</p>
+        <h2>Why the lines are not straight</h2>
+        <p>If zones followed longitude exactly, a single city could straddle two times. So boundaries bend around borders, rivers and communities. China, which spans five geographical zones, keeps one single time nationwide — which is why the sun can rise at 10:00 in the far west of the country. Spain keeps the same time as Germany despite lying on roughly the same longitude as Britain, a legacy of a 1940 decision that was never reversed. France, counting its overseas territories, touches more zones than any other country: twelve.</p>
+        <h2>The International Date Line</h2>
+        <p>Somewhere, the day has to start. The International Date Line runs through the Pacific Ocean, roughly opposite the prime meridian. Cross it westward and you jump a day forward; cross it eastward and you repeat a day. It zigzags to keep island nations on one side or the other as whole countries. The line is the reason the <a href="#/">world clock</a> on our home page can show Tuesday in New York and Wednesday in Sydney at the same instant — both are correct, separated by a line drawn in the ocean.</p>
+        <h2>The database behind the converter</h2>
+        <p>All of these rules — every offset, every historical change, every future clock shift — are recorded in the IANA time zone database, maintained by the Internet Assigned Numbers Authority and built into every modern operating system and browser. The <a href="#/converter">converter on TimeZoneHub</a> reads those rules directly through your browser, which is why it can tell you that New York and London are five hours apart in January but four hours apart for a few weeks in March. When a government announces a change, the database is updated and the converter's answers change with it — no stale tables, no guesswork.</p>
+        <p>For the counting question — how the 24 textbook zones become several hundred real ones — see <a href="#/article/how-many-time-zones">how many time zones are there in the world?</a> And for the two names of the reference time itself, see <a href="#/article/utc-vs-gmt">UTC vs GMT</a>.</p>
+      </section>
+
+      <!-- ============ ARTICLE: UTC VS GMT ============ -->
+      <section class="page" id="page-article-utc-vs-gmt">
+        <h1>UTC vs GMT: What Is the Difference?</h1>
+        <p class="meta-line">TimeZoneHub guide · Reading time about 4 minutes</p>
+        <p>Ask a room of people what time it is "in GMT" and someone will eventually ask whether you meant UTC. The two abbreviations are used interchangeably in everyday conversation, on flight tickets and in meeting invitations — and for almost every practical purpose, that is perfectly fine. But they are not the same standard, they were created a century apart for different reasons, and in a handful of technical fields the difference genuinely matters.</p>
+        <h2>GMT: time from the sun</h2>
+        <p>Greenwich Mean Time is the older standard. It was defined by astronomers at the Royal Observatory in Greenwich, London, as the average — the "mean" — of the solar day: the time between one noon and the next, smoothed over the year to iron out the Earth's slightly uneven motion. Britain adopted it as its legal time in 1880, and the 1884 prime meridian conference made Greenwich the world's zero longitude, so GMT became the reference from which all other zones were measured. For nearly a hundred years, if you wanted to know the world's time, you ultimately asked what the clocks at Greenwich said.</p>
+        <h2>UTC: time from atoms</h2>
+        <p>By the 1960s, atomic clocks could measure time far more precisely than telescopes could, and scientists wanted a standard that did not depend on the Earth's wobbling rotation. The result was Coordinated Universal Time, UTC — defined by atomic time but kept in step with the Earth's rotation by inserting an occasional leap second. UTC was adopted internationally in 1972 and is now maintained by the Bureau International des Poids et Mesures, which combines readings from hundreds of atomic clocks in laboratories around the world. Every time zone offset you have ever seen — UTC+5, UTC−8 — is measured against it.</p>
+        <h2>Where they actually differ</h2>
+        <p>Three differences matter. First, precision: GMT, tied to the rotating Earth, can drift by fractions of a second against atomic time, while UTC is exact by definition — critical for GPS satellites, financial trading systems and scientific measurements. Second, daylight saving: GMT as a named zone is what the United Kingdom uses in winter, switching to British Summer Time (BST) in summer; UTC never changes, which is why it is the safe choice in international documents. Third, usage: GMT survives as a zone name in the IANA database and in everyday British speech, while UTC is the standard in aviation, computing, weather forecasting and space flight. The BBC World Service, a famous holdout, still announces GMT.</p>
+        <h2>Which one should you use?</h2>
+        <p>In casual conversation, either — the person you are talking to will understand both as "the time at zero offset". In anything written down that matters, prefer UTC with an explicit offset: "14:00 UTC" or "19:00 (UTC+5)" cannot be misunderstood in any country or season. The one real trap is writing "GMT" in summer about a British time: London in July is on BST, one hour ahead of GMT, and that single hour has derailed many meetings. The <a href="#/converter">TimeZoneHub converter</a> sidesteps the whole question by working with named places and dates rather than abbreviations.</p>
+        <p>To see how these offsets combine into the worldwide system, read <a href="#/article/how-time-zones-work">how time zones work</a>. For the seasonal complication that neither UTC nor GMT has but almost every local zone does, read <a href="#/article/daylight-saving-time-explained">daylight saving time explained</a>.</p>
+      </section>
+
+      <!-- ============ ARTICLE: DST ============ -->
+      <section class="page" id="page-article-daylight-saving-time-explained">
+        <h1>Daylight Saving Time Explained</h1>
+        <p class="meta-line">TimeZoneHub guide · Reading time about 5 minutes</p>
+        <p>Twice a year, in roughly 70 countries, hundreds of millions of people change their clocks — forward one hour in spring, back one hour in autumn. The practice is called daylight saving time (DST) in North America and Australia, and summer time in Europe. It is loved, hated, debated in parliaments every year, and responsible for a large share of all time zone confusion. This article explains what it is, why it exists, and exactly what it does to your conversions.</p>
+        <h2>The basic idea</h2>
+        <p>In summer, the sun rises early — often before most people wake. That early daylight is, in a sense, wasted. Daylight saving moves one hour of it to the evening: clocks jump forward, so the clock says 19:00 when the sun is where it would be at 18:00. Evenings feel longer and lighter; mornings start darker. In autumn the hour is handed back. The mnemonics are "spring forward, fall back". Nothing about the day itself changes — there are still 24 hours of rotation — only the labels on the hours shift.</p>
+        <h2>A short history</h2>
+        <p>The idea was floated half-jokingly by Benjamin Franklin in 1784 (he suggested Parisians could save candles by waking earlier) and campaigned for seriously by the entomologist George Hudson, who wanted lighter evenings to collect insects. Germany was the first country to adopt it nationally, in 1916, to save coal during the First World War; Britain and the United States followed. It was dropped in peacetime, revived in the Second World War, expanded during the 1970s energy crisis, and has been expanding and contracting by legislation ever since. The European Union voted in 2019 to abolish the seasonal change, though the change has not yet been implemented; the United States Senate passed a similar bill in 2022 that did not become law.</p>
+        <h2>Who observes it, and who does not</h2>
+        <p>Most of Europe, North America, and parts of South America, Australia and New Zealand observe some form of it. Most of Asia and Africa do not — including Pakistan, India, China and Japan — and several countries that once did, such as Russia and Turkey, have stopped, choosing to stay on their summer offset permanently. Crucially, the southern hemisphere runs on the opposite calendar: Sydney springs forward in October and falls back in April, exactly out of phase with London and New York.</p>
+        <h2>What it does to conversions</h2>
+        <p>Because changeover dates differ between countries, offsets between two cities are not constant. New York and London are five hours apart for most of the year, but the United States changes its clocks two to three weeks before Europe in spring, and a week later in autumn — so for those in-between weeks the gap is four hours. London and Sydney swing between nine and eleven hours apart across the year because their changes run in opposite directions. Any conversion tool that uses a fixed offset table will be wrong for part of the year. The <a href="#/converter">TimeZoneHub converter</a> uses the official IANA rules for your exact date, which is why converting the same clock time in January and July can honestly produce different answers.</p>
+        <h2>Practical tips</h2>
+        <ul>
+          <li>Be extra careful booking calls in March, April, October and November — the changeover months.</li>
+          <li>Remember that the clocks change at 2:00 or 3:00 in the morning locally, so a red-eye flight can land in a different offset regime than the one it left.</li>
+          <li>When a time absolutely must not be misunderstood — a product launch, a filing deadline — state it in UTC as well. UTC never observes daylight saving, as explained in <a href="#/article/utc-vs-gmt">UTC vs GMT</a>.</li>
+          <li>If you run a recurring international meeting, re-check the converted time after every changeover; calendar software usually handles it, but recurring invites created by hand often do not.</li>
+        </ul>
+        <p>For suggested hours that stay comfortable on both sides of the clock changes, see the <a href="#/article/best-meeting-times-across-time-zones">best meeting times across time zones</a>.</p>
+      </section>
+
+      <!-- ============ ARTICLE: HOW MANY ============ -->
+      <section class="page" id="page-article-how-many-time-zones">
+        <h1>How Many Time Zones Are There in the World?</h1>
+        <p class="meta-line">TimeZoneHub guide · Reading time about 4 minutes</p>
+        <p>It sounds like a trivia question with one clean answer. It is not. Depending on what you choose to count — theoretical bands, distinct UTC offsets, countries' official zones, or entries in the database your computer uses — you can defend answers of 24, 38, or more than 400. Here is why each number exists, and which one you actually need.</p>
+        <h2>24: the textbook answer</h2>
+        <p>The Earth rotates 360 degrees in 24 hours, so each hour of time corresponds to 15 degrees of longitude. Divide the globe into 24 bands of 15 degrees and you get 24 time zones, one for each hour of the day. This is the system sketched at the 1884 prime meridian conference and printed in every school atlas. It is a useful mental model — and almost nowhere on land do the real boundaries follow it, because, as <a href="#/article/how-time-zones-work">how time zones work</a> explains, borders bend for politics and convenience.</p>
+        <h2>38: the offsets actually in use</h2>
+        <p>Count the distinct offsets from UTC that real places currently use, and the total climbs to about 38. The extras come from three sources. First, half-hour zones: India (UTC+5:30), Iran (UTC+3:30) and parts of Australia refuse to round to the nearest hour. Second, 45-minute zones: Nepal keeps UTC+5:45, reportedly to assert independence from India's time, and the Chatham Islands of New Zealand use UTC+12:45. Third, daylight saving splits single zones into pairs — a place at UTC+1 in winter and UTC+2 in summer contributes two offsets across the year. The extremes of the system are UTC−12 (uninhabited US Pacific territories) and UTC+14 (the Line Islands of Kiribati), meaning that at one moment each day, three different calendar dates exist simultaneously somewhere on Earth.</p>
+        <h2>400+: the database answer</h2>
+        <p>Your phone and computer do not store offsets; they store named zones from the IANA time zone database, such as America/New_York or Asia/Karachi. There are several hundred of these, because the database records history as well as geography: two cities in the same country need separate entries if their rules ever differed in the past. Indiana in the United States alone has several entries thanks to its famously complicated local history with daylight saving. When you open the <a href="#/converter">converter on TimeZoneHub</a>, the long list in the dropdowns is exactly this database, served by your browser.</p>
+        <h2>And by country?</h2>
+        <p>France leads the world with 12 time zones, thanks to overseas territories from the Caribbean to the Pacific — though metropolitan France itself uses just one. The United States and Russia each span 11 by the same counting method. At the other extreme, China uses a single zone (UTC+8) across a landmass that would naturally cover five, and India uses one (UTC+5:30) across two. The practical lesson for travellers and remote teams: never assume a country has "a" time zone until you have checked the specific city.</p>
+        <p>So — 24 in theory, about 38 offsets in practice, several hundred named zones in the database. All three answers are correct; they are just counting different things. For the reference all of them are measured against, read <a href="#/article/utc-vs-gmt">UTC vs GMT</a>.</p>
+      </section>
+
+      <!-- ============ ARTICLE: BEST MEETING TIMES ============ -->
+      <section class="page" id="page-article-best-meeting-times-across-time-zones">
+        <h1>Best Meeting Times Across Time Zones</h1>
+        <p class="meta-line">TimeZoneHub guide · Reading time about 5 minutes</p>
+        <p>Every international team eventually discovers the same truth: there is no universally good meeting time, only fairly shared ones. But "fair" still leaves a wide range of better and worse options for each pair of cities. This guide works through the most common pairings with concrete hours, using a simple standard — a good slot keeps both sides between 8:00 in the morning and 10:00 in the evening, and a great slot keeps both inside the working day.</p>
+        <h2>New York and London (5 hours apart, 4 in changeover weeks)</h2>
+        <p>The friendliest long-distance pairing in business. Schedule between 8:00 and 13:00 in New York, which is 13:00 to 18:00 in London. Late morning in New York — 11:00, or 16:00 in London — is the sweet spot: both sides are alert, and neither is at the edge of their day. Beware the March and October changeover weeks described in <a href="#/article/daylight-saving-time-explained">daylight saving time explained</a>, when the gap temporarily narrows to four hours.</p>
+        <h2>London and Karachi (4–5 hours apart)</h2>
+        <p>Karachi does not observe daylight saving, so the gap is five hours in British winter and four in summer. The comfortable window is 10:00 to 15:00 in London — 14:00/15:00 to 19:00/20:00 in Karachi. A noon London call lands at 16:00 or 17:00 in Karachi, late afternoon, which most people find entirely reasonable. This is one of the easiest intercontinental pairings to run a daily stand-up on.</p>
+        <h2>London and Dubai (3–4 hours apart)</h2>
+        <p>Dubai is four hours ahead of London in winter and three in summer. Almost the whole London working day overlaps Dubai's: 9:00 in London is 12:00 or 13:00 in Dubai. The only trap is the weekend — Friday is part of the weekend in the UAE's public sector rhythm and a holy day, so keep recurring meetings Monday to Thursday.</p>
+        <h2>London and Tokyo (8–9 hours apart)</h2>
+        <p>Now it gets tight. The only overlap inside both reasonable days is early in London and late in Tokyo: 8:00–10:00 in London is 16:00–19:00 in Tokyo (17:00–20:00 in British summer). There is no slot that puts both sides mid-morning, so fix the London-early/Tokyo-late pattern and protect it rather than rotating — rotation here just makes both slots bad half the time.</p>
+        <h2>New York and Sydney (14–16 hours apart)</h2>
+        <p>The hardest common pairing. Sydney is effectively on the other side of the clock: when it is 9:00 Monday in New York, it is already midnight or later in Sydney. The workable compromise is the hinge of the day — 17:00–19:00 in New York is 7:00–9:00 the next morning in Sydney. New York takes the late slot, Sydney takes the early one, and the meeting is short. Verify the exact day shift with the <a href="#/converter">converter</a> every time, because this pairing crosses the Date Line and the gap swings by two hours across the year.</p>
+        <h2>Rules that help every pairing</h2>
+        <ul>
+          <li><strong>Rotate the pain.</strong> If a slot is genuinely bad for one side, alternate who takes it, month by month. Nothing corrodes a team faster than one office permanently owning the midnight call.</li>
+          <li><strong>Write both times, both dates.</strong> "Tuesday 17:00 New York / Wednesday 08:00 Sydney" cannot be misread; "Tuesday 5 pm" can, and will be.</li>
+          <li><strong>Recheck after clock changes.</strong> A recurring slot that was perfect in February can drift an hour in March. The rules behind the drift are in <a href="#/article/how-time-zones-work">how time zones work</a>.</li>
+          <li><strong>Default to recording.</strong> For gaps over ten hours, an async video update plus a short written summary often beats any live slot you can find.</li>
+        </ul>
+        <p>When you have a specific date in mind, run it through the <a href="#/converter">TimeZoneHub converter</a> rather than doing offset arithmetic in your head — the date-specific rules are exactly what it exists for. More quick answers live on the <a href="#/faq">FAQ page</a>.</p>
+      </section>
+
+      <!-- ============ FAQ ============ -->
+      <section class="page" id="page-faq">
+        <h1>Frequently Asked Questions</h1>
+        <p class="lede">Short answers to the questions people ask most about time zones and conversions. For the long versions, see the <a href="#/articles">articles</a>.</p>
+        <div class="faq-item">
+          <h3>How does the TimeZoneHub converter work?</h3>
+          <p>It reads the official IANA time zone rules built into your browser, works out the exact UTC instant for the date and time you enter in the "from" zone, then expresses that same instant in the "to" zone. Because it uses the real rules for your exact date, daylight saving changes are handled automatically.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Why is the time difference between two cities not the same all year?</h3>
+          <p>Because of daylight saving time. If one city changes its clocks and the other does not — or they change on different dates, or in opposite seasons — the gap between them grows or shrinks by an hour. See <a href="#/article/daylight-saving-time-explained">daylight saving time explained</a>.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What is UTC, in one sentence?</h3>
+          <p>UTC is the world's reference time, kept by atomic clocks, from which every time zone's offset is measured; it never changes for daylight saving. The longer story is in <a href="#/article/utc-vs-gmt">UTC vs GMT</a>.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Is GMT the same as UK time?</h3>
+          <p>Only in winter. The United Kingdom uses GMT in the winter months and British Summer Time (BST, one hour ahead) from late March to late October. A meeting set for "3 pm GMT" in July is genuinely ambiguous — one more reason to convert by city name instead.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Which country has the most time zones?</h3>
+          <p>France, with 12, counting its overseas territories. The United States and Russia follow with 11 each. China, despite its size, uses just one. Details in <a href="#/article/how-many-time-zones">how many time zones are there?</a></p>
+        </div>
+        <div class="faq-item">
+          <h3>Why do some zones use half hours or 45 minutes?</h3>
+          <p>Because their standard time was set by local solar time or by political choice rather than by rounding to the nearest hour. India is UTC+5:30, Nepal is UTC+5:45, and Iran is UTC+3:30. The converter handles these exactly like whole-hour zones.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What is the biggest possible time difference between two places?</h3>
+          <p>26 hours, between UTC−12 and UTC+14. In practice, the largest gap between two major cities is the 16 hours that can separate New York and Sydney in some months — which is why that pairing has no comfortable meeting slot, as covered in <a href="#/article/best-meeting-times-across-time-zones">best meeting times across time zones</a>.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does TimeZoneHub store the times I convert?</h3>
+          <p>No. Every conversion happens entirely in your browser; nothing you enter is sent anywhere or saved. See the <a href="#/privacy">privacy policy</a> for the full statement.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I rely on this converter for a flight or a legal deadline?</h3>
+          <p>The converter uses the same zone database as your phone and calendar, and its results are suitable for everyday planning. For anything where an error would be costly, confirm against the airline's or authority's own statement of the time — our <a href="#/disclaimer">disclaimer</a> explains why.</p>
+        </div>
+        <p>Still curious? The <a href="#/articles">articles section</a> goes deeper on every topic above, or go straight to the <a href="#/converter">converter</a> and test a date of your own.</p>
+      </section>
+
+      <!-- ============ ABOUT ============ -->
+      <section class="page" id="page-about">
+        <h1>About TimeZoneHub</h1>
+        <p>TimeZoneHub is a small, focused tool site built around one job: turning a time in one place into the correct time in another, for the exact date you care about — and explaining the system well enough that the answer makes sense.</p>
+        <h2>How the converter calculates</h2>
+        <p>Every modern browser carries the IANA time zone database: the official, continuously updated record of every zone's offset and daylight saving rules, past and future. TimeZoneHub's <a href="#/converter">converter</a> uses your browser's own copy of that database through the standard JavaScript <em>Intl</em> interface. When you pick 12:00 in New York on a January date, the tool finds the UTC instant that corresponds to noon in New York on that date, then renders that instant in your chosen destination zone. Nothing is approximated, and nothing is looked up from a static table that could go stale.</p>
+        <h2>Why the guides exist</h2>
+        <p>A converter alone leaves the interesting questions unanswered: why the gap between two cities changes in March, why Nepal is 45 minutes off the hour, why your flight lands "before" it took off. The <a href="#/articles">articles</a> on this site — on <a href="#/article/how-time-zones-work">how time zones work</a>, <a href="#/article/utc-vs-gmt">UTC vs GMT</a>, <a href="#/article/daylight-saving-time-explained">daylight saving</a> and <a href="#/article/best-meeting-times-across-time-zones">scheduling across zones</a> — are original pieces written for this site to answer those questions in plain English.</p>
+        <h2>What TimeZoneHub is not</h2>
+        <p>It is not an official standards body, and it does not set or announce time zone rules; governments do that, and the IANA database records their decisions. It is a reader and calculator of those rules, offered free, with no account and no tracking of the times you convert. If you find an answer that looks wrong, we genuinely want to hear about it via the <a href="#/contact">contact page</a> — zone rules change, and corrections keep the tool honest.</p>
+      </section>
+
+      <!-- ============ CONTACT ============ -->
+      <section class="page" id="page-contact">
+        <h1>Contact</h1>
+        <p>The fastest way to reach TimeZoneHub is by email:</p>
+        <p><strong><a href="mailto:contact@timezonehub.github.io">contact@timezonehub.github.io</a></strong></p>
+        <h2>What to write about</h2>
+        <ul>
+          <li><strong>A conversion that looks wrong.</strong> Please include the date, the time, and both zones exactly as you entered them — zone errors are almost always traceable to a specific rule on a specific date.</li>
+          <li><strong>A mistake in an article.</strong> Time zone rules change when governments legislate; if a guide is out of date, tell us which claim and where.</li>
+          <li><strong>Suggestions.</strong> A city pair you would like covered in the <a href="#/article/best-meeting-times-across-time-zones">meeting times guide</a>, or a question for the <a href="#/faq">FAQ</a>.</li>
+        </ul>
+        <p>Please note that TimeZoneHub cannot change a meeting, rebook a flight, or adjust any official record — we publish a calculator and guides only. For the limits of what the tool should be relied on for, see the <a href="#/disclaimer">disclaimer</a>.</p>
+      </section>
+
+      <!-- ============ PRIVACY ============ -->
+      <section class="page" id="page-privacy">
+        <h1>Privacy Policy</h1>
+        <p class="meta-line">Last updated: 2026</p>
+        <p>TimeZoneHub is designed to need as little of your information as possible.</p>
+        <h2>What happens when you use the converter</h2>
+        <p>All conversions are performed entirely inside your browser, using the time zone data built into it. The dates, times and zones you enter are never transmitted to a server, never stored, and never shared. The live world clock likewise reads only your own device's clock. When you close the page, nothing about your session remains anywhere.</p>
+        <h2>Cookies and tracking</h2>
+        <p>This site does not set cookies for advertising or cross-site tracking, and it does not run third-party analytics that profile visitors. Standard server logs (such as IP address and browser type) may be kept by the hosting provider for security and reliability, as is routine across the web.</p>
+        <h2>Email</h2>
+        <p>If you write to us using the address on the <a href="#/contact">contact page</a>, your message is used only to reply to you and to fix or improve the site as you suggest. It is not added to any mailing list and is not sold or shared.</p>
+        <h2>Changes to this policy</h2>
+        <p>If this policy changes, the updated text will be posted on this page with a new date. Continued use of the site after a change means you accept the updated policy.</p>
+      </section>
+
+      <!-- ============ TERMS ============ -->
+      <section class="page" id="page-terms">
+        <h1>Terms of Use</h1>
+        <p class="meta-line">Last updated: 2026</p>
+        <p>By using TimeZoneHub you accept these terms. If you do not agree with them, please do not use the site.</p>
+        <h2>The service</h2>
+        <p>TimeZoneHub provides a time zone converter, live world clocks and educational articles, free of charge and without registration. The content is provided for general information and everyday planning.</p>
+        <h2>Accuracy</h2>
+        <p>Conversions are calculated from the IANA time zone database as implemented by your browser. We work to keep the site correct, but time zone rules are set by governments and can change; we cannot guarantee that every result is free of error at every moment. The <a href="#/disclaimer">disclaimer</a> sets out the limits of reliance in more detail.</p>
+        <h2>Acceptable use</h2>
+        <p>You may use the site for personal and business planning. You may not misrepresent the site's output as an official determination of time, interfere with the site's operation, or reproduce substantial parts of its articles without permission.</p>
+        <h2>Intellectual property</h2>
+        <p>The text of this site's articles and pages is the property of TimeZoneHub unless otherwise stated. The underlying time zone data belongs to its public maintainers and is used under its terms.</p>
+        <h2>Liability</h2>
+        <p>To the maximum extent permitted by law, TimeZoneHub is not liable for any loss arising from reliance on a conversion or article, including missed meetings, travel disruption or missed deadlines. Always confirm critical times with the relevant airline, authority or counterparty.</p>
+      </section>
+
+      <!-- ============ DISCLAIMER ============ -->
+      <section class="page" id="page-disclaimer">
+        <h1>Disclaimer</h1>
+        <p class="meta-line">Last updated: 2026</p>
+        <p>TimeZoneHub's converter computes results from the IANA time zone database as implemented in your web browser — the same data source used by major operating systems and calendar applications. Even so, results are provided "as is", for general guidance only.</p>
+        <p>Time zone rules are political decisions and change regularly: governments introduce, abolish or reschedule daylight saving time, move regions between zones, and occasionally alter offsets at short notice. There can be a delay between such a decision and its reflection in the database build shipped with a given browser. A result for a far-future date is therefore a statement of the rules as currently known, not a guarantee of the rules that will apply on that date.</p>
+        <p>Do not rely solely on this site for anything where an error would carry serious consequences — including legal filing deadlines, medical scheduling, financial market timing, or catching a flight. In those cases, confirm the time with the responsible authority or service provider. Your use of the site is also subject to our <a href="#/terms">terms of use</a> and <a href="#/privacy">privacy policy</a>.</p>
+      </section>
+
+    </main>
+
+    <footer class="site">
+      <div class="wrap">
+        <nav aria-label="Footer navigation">
+          <a href="#/">Home</a>
+          <a href="#/converter">Converter</a>
+          <a href="#/articles">Articles</a>
+          <a href="#/faq">FAQ</a>
+          <a href="#/about">About</a>
+          <a href="#/contact">Contact</a>
+          <a href="#/privacy">Privacy</a>
+          <a href="#/terms">Terms</a>
+          <a href="#/disclaimer">Disclaimer</a>
+        </nav>
+        <p>&copy; 2026 TimeZoneHub. Times are calculated in your browser from the IANA time zone database.</p>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        "use strict";
+
+        /* ---------- Time zone list ---------- */
+        var FALLBACK_ZONES = [
+          "America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles",
+          "America/Toronto", "America/Mexico_City", "America/Sao_Paulo", "Europe/London",
+          "Europe/Paris", "Europe/Berlin", "Europe/Moscow", "Africa/Cairo", "Africa/Lagos",
+          "Asia/Dubai", "Asia/Karachi", "Asia/Kolkata", "Asia/Dhaka", "Asia/Bangkok",
+          "Asia/Singapore", "Asia/Shanghai", "Asia/Tokyo", "Asia/Seoul",
+          "Australia/Sydney", "Australia/Perth", "Pacific/Auckland", "UTC"
+        ];
+        var zones = FALLBACK_ZONES.slice();
+        try {
+          if (typeof Intl.supportedValuesOf === "function") {
+            var supported = Intl.supportedValuesOf("timeZone");
+            if (supported && supported.length > 50) zones = supported.slice();
+          }
+        } catch (e) { /* keep fallback */ }
+        // Some engines omit "UTC" from supportedValuesOf even though it is a
+        // valid zone; make sure it is always selectable.
+        if (zones.indexOf("UTC") === -1) zones.unshift("UTC");
+
+        function prettyZone(z) {
+          var parts = z.split("/");
+          var city = parts[parts.length - 1].replace(/_/g, " ");
+          var region = parts.length > 1 ? parts[0].replace(/_/g, " ") : "";
+          return region ? city + " (" + region + ")" : city;
+        }
+        function cityName(z) {
+          var parts = z.split("/");
+          return parts[parts.length - 1].replace(/_/g, " ");
+        }
+
+        /* ---------- Offset helpers (IANA rules via Intl) ---------- */
+        var partsFmtCache = {};
+        function partsFormatter(tz) {
+          if (!partsFmtCache[tz]) {
+            partsFmtCache[tz] = new Intl.DateTimeFormat("en-US", {
+              timeZone: tz, hourCycle: "h23",
+              year: "numeric", month: "2-digit", day: "2-digit",
+              hour: "2-digit", minute: "2-digit", second: "2-digit"
+            });
+          }
+          return partsFmtCache[tz];
+        }
+        // Offset of tz at instant date, in milliseconds (local-as-UTC minus UTC)
+        function offsetMs(tz, date) {
+          var parts = {};
+          partsFormatter(tz).formatToParts(date).forEach(function (p) { parts[p.type] = p.value; });
+          var asUTC = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute, +parts.second);
+          return asUTC - Math.floor(date.getTime() / 1000) * 1000;
+        }
+        // The UTC instant whose wall-clock time in tz equals the given fields
+        function zonedToUtc(y, mo, d, h, mi, tz) {
+          var guess = Date.UTC(y, mo - 1, d, h, mi, 0);
+          var utc = guess - offsetMs(tz, new Date(guess));
+          utc = guess - offsetMs(tz, new Date(utc)); // refine across DST boundaries
+          return new Date(utc);
+        }
+        function fmtOffset(ms) {
+          var mins = Math.round(ms / 60000);
+          var sign = mins < 0 ? "\u2212" : "+";
+          var abs = Math.abs(mins);
+          var hh = Math.floor(abs / 60), mm = abs % 60;
+          return "UTC" + sign + (hh < 10 ? "0" : "") + hh + ":" + (mm < 10 ? "0" : "") + mm;
+        }
+        function fmtDiff(ms) {
+          var mins = Math.round(ms / 60000);
+          if (mins === 0) return "the same time — there is no difference between the two zones on this date";
+          var ahead = mins > 0;
+          var abs = Math.abs(mins);
+          var hh = Math.floor(abs / 60), mm = abs % 60;
+          var txt = hh > 0 ? hh + (hh === 1 ? " hour" : " hours") : "";
+          if (mm > 0) txt += (txt ? " " : "") + mm + " minutes";
+          return txt + (ahead ? " ahead" : " behind");
+        }
+
+        /* ---------- Converter ---------- */
+        var fromSel = document.getElementById("fromZone");
+        var toSel = document.getElementById("toZone");
+        var whenInput = document.getElementById("whenInput");
+        var rLabel = document.getElementById("rLabel");
+        var rTime = document.getElementById("rTime");
+        var rSub = document.getElementById("rSub");
+        var rDiff = document.getElementById("rDiff");
+        var rUtc = document.getElementById("rUtc");
+
+        function fillSelect(sel) {
+          zones.forEach(function (z) {
+            var opt = document.createElement("option");
+            opt.value = z;
+            opt.textContent = prettyZone(z) + " — " + z;
+            sel.appendChild(opt);
+          });
+        }
+        fillSelect(fromSel);
+        fillSelect(toSel);
+
+        var localZone = "UTC";
+        try { localZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"; } catch (e) {}
+        if (zones.indexOf(localZone) === -1) localZone = "UTC";
+        fromSel.value = localZone;
+        if (!fromSel.value) fromSel.value = zones[0];
+        toSel.value = (localZone === "Europe/London") ? "America/New_York" : "Europe/London";
+        if (!toSel.value) toSel.value = zones.length > 1 ? zones[1] : zones[0];
+
+        function pad(n) { return (n < 10 ? "0" : "") + n; }
+        function setWhenToNow() {
+          var now = new Date();
+          whenInput.value = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate()) +
+            "T" + pad(now.getHours()) + ":" + pad(now.getMinutes());
+        }
+        setWhenToNow();
+
+        var longFmtCache = {};
+        function longFormatter(tz) {
+          if (!longFmtCache[tz]) {
+            longFmtCache[tz] = new Intl.DateTimeFormat("en-GB", {
+              timeZone: tz, weekday: "long", day: "numeric", month: "long", year: "numeric",
+              hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+            });
+          }
+          return longFmtCache[tz];
+        }
+        function dayIn(tz, date) {
+          return new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+        }
+
+        function convertInner() {
+          var from = fromSel.value, to = toSel.value;
+          var v = whenInput.value;
+          if (!v) { rTime.textContent = "Pick a date and time"; rSub.textContent = ""; rDiff.textContent = ""; rUtc.textContent = ""; return; }
+          var bits = v.split("T");
+          var dp = bits[0].split("-"), tp = (bits[1] || "00:00").split(":");
+          var instant = zonedToUtc(+dp[0], +dp[1], +dp[2], +tp[0], +tp[1], from);
+
+          var fromOff = offsetMs(from, instant);
+          var toOff = offsetMs(to, instant);
+
+          rLabel.textContent = "In " + cityName(to) + " (" + to + ") that is";
+          rTime.textContent = longFormatter(to).format(instant);
+          var dayNote = "";
+          var dFrom = dayIn(from, instant), dTo = dayIn(to, instant);
+          if (dTo > dFrom) dayNote = " — the next calendar day in " + cityName(to);
+          else if (dTo < dFrom) dayNote = " — the previous calendar day in " + cityName(to);
+          rSub.textContent = "From " + longFormatter(from).format(instant) + " in " + cityName(from) + dayNote + ".";
+          var diffMs = toOff - fromOff;
+          if (Math.round(diffMs / 60000) === 0) {
+            rDiff.textContent = "There is no time difference between " + cityName(from) + " and " + cityName(to) +
+              " on this date — both zones are at " + fmtOffset(toOff) + ".";
+          } else {
+            rDiff.textContent = cityName(to) + " is " + fmtDiff(diffMs) + " " + cityName(from) +
+              " on this date (" + from + " is " + fmtOffset(fromOff) + "; " + to + " is " + fmtOffset(toOff) + ").";
+          }
+          rUtc.textContent = "The same moment in UTC: " + longFormatter("UTC").format(instant) + ".";
+        }
+
+        function convert() {
+          try { convertInner(); }
+          catch (e) {
+            rLabel.textContent = "Converted time";
+            rTime.textContent = "This conversion is not available in your browser";
+            rSub.textContent = ""; rDiff.textContent = ""; rUtc.textContent = "";
+          }
+        }
+
+        fromSel.addEventListener("change", convert);
+        toSel.addEventListener("change", convert);
+        whenInput.addEventListener("input", convert);
+        whenInput.addEventListener("change", convert);
+        document.getElementById("swapBtn").addEventListener("click", function () {
+          var t = fromSel.value; fromSel.value = toSel.value; toSel.value = t; convert();
+        });
+        document.getElementById("nowBtn").addEventListener("click", function () { setWhenToNow(); convert(); });
+        convert();
+
+        /* ---------- World clock ---------- */
+        var CITIES = [
+          { name: "New York", tz: "America/New_York" },
+          { name: "London", tz: "Europe/London" },
+          { name: "Dubai", tz: "Asia/Dubai" },
+          { name: "Karachi", tz: "Asia/Karachi" },
+          { name: "Tokyo", tz: "Asia/Tokyo" },
+          { name: "Sydney", tz: "Australia/Sydney" }
+        ];
+        var clockRow = document.getElementById("clockRow");
+        var cells = CITIES.map(function (c) {
+          var cell = document.createElement("div");
+          cell.className = "clock-cell";
+          cell.innerHTML = '<div class="clock-city"></div><div class="clock-time"></div><div class="clock-date"></div><div class="clock-off"></div>';
+          cell.querySelector(".clock-city").textContent = c.name;
+          clockRow.appendChild(cell);
+          return {
+            tz: c.tz,
+            time: cell.querySelector(".clock-time"),
+            date: cell.querySelector(".clock-date"),
+            off: cell.querySelector(".clock-off"),
+            timeFmt: new Intl.DateTimeFormat("en-GB", { timeZone: c.tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }),
+            dateFmt: new Intl.DateTimeFormat("en-GB", { timeZone: c.tz, weekday: "short", day: "numeric", month: "short" })
+          };
+        });
+        function tickClocks() {
+          try {
+          var now = new Date();
+          cells.forEach(function (c) {
+            c.time.textContent = c.timeFmt.format(now);
+            c.date.textContent = c.dateFmt.format(now);
+            c.off.textContent = fmtOffset(offsetMs(c.tz, now));
+          });
+          } catch (e) { /* clocks are decorative; never break routing */ }
+        }
+        tickClocks();
+        setInterval(tickClocks, 1000);
+
+        /* ---------- Router ---------- */
+        var PAGES = ["home", "articles", "faq", "about", "contact", "privacy", "terms", "disclaimer"];
+        var ARTICLE_SLUGS = ["how-time-zones-work", "utc-vs-gmt", "daylight-saving-time-explained", "how-many-time-zones", "best-meeting-times-across-time-zones"];
+        function route() {
+          var hash = location.hash || "#/";
+          var path = hash.replace(/^#\/?/, "");
+          var pageId = "home", scrollToTool = false;
+          if (path === "" ) pageId = "home";
+          else if (path === "converter") { pageId = "home"; scrollToTool = true; }
+          else if (path.indexOf("article/") === 0) {
+            var slug = path.slice("article/".length);
+            pageId = ARTICLE_SLUGS.indexOf(slug) !== -1 ? "article-" + slug : "articles";
+          }
+          else if (PAGES.indexOf(path) !== -1) pageId = path;
+          else pageId = "home";
+
+          var all = document.querySelectorAll(".page");
+          for (var i = 0; i < all.length; i++) all[i].classList.remove("current");
+          var target = document.getElementById("page-" + pageId);
+          if (target) target.classList.add("current");
+
+          var navKey = pageId.indexOf("article-") === 0 ? "articles" : pageId;
+          var navLinks = document.querySelectorAll("nav.main a");
+          for (var j = 0; j < navLinks.length; j++) {
+            navLinks[j].classList.toggle("active", navLinks[j].getAttribute("data-nav") === navKey);
+          }
+
+          if (scrollToTool) {
+            var tool = document.getElementById("tool");
+            if (tool) setTimeout(function () { tool.scrollIntoView({ behavior: "smooth", block: "start" }); }, 30);
+          } else {
+            window.scrollTo(0, 0);
+          }
+        }
+        window.addEventListener("hashchange", route);
+        route();
+      })();
+    </script>
+  </body>
+</html>
